@@ -63,9 +63,8 @@ class CreateAdminCommand extends Command {
 		}else{
             unset($data['password_confirmation']);
             $data['password'] = Hash::make($data['password']);
-            $user = new User();
-            foreach($data as $key => $val){$user->{$key} = $val;}
-            $user->save();
+            Eloquent::unguard();
+            $user = User::create($data);
 			echo $this->colorize("User " . $user->getFullName() . " created successfully", "success")."\n";
 		}
 	}
