@@ -2,6 +2,32 @@
 
 define('LARAVEL_START', microtime(true));
 
+function l(){
+    $str = get_dump(func_get_args());
+    echo $str;
+}
+
+function k(){
+    $str = get_dump(func_get_args());
+    die($str);
+}
+
+function r(){
+    $str = get_dump(func_get_args());
+    return $str;
+}
+
+function get_dump($vars){
+    $t = debug_backtrace();
+    $str = '<pre style="color: red">Called from ' . $t[1]['file'] . ' at line ' . $t[1]['line'] . ":\n\n";
+    foreach($vars as $var)
+    {
+        $str.= print_r($var, true) . "\n\n";
+    }
+    $str.= "</pre>";
+    echo $str;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Register The Composer Auto Loader

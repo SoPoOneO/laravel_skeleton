@@ -11,3 +11,8 @@
 |
 */
 
+Artisan::add(new CreateAdminCommand);
+
+Artisan::add(new MigrateRedoCommand);
+
+Artisan::add(new DatabaseClearCommand);
