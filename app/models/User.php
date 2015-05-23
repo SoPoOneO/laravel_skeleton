@@ -9,7 +9,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
     use UserTrait, RemindableTrait;
 
-    protected $hidden = array('password', 'remember_token');
+    protected $hidden = array('password', 'remember_token', 'confirmation_code');
 
     public static $create_rules = array(
         'first_name' => 'required',
@@ -48,6 +48,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         foreach($data as $key => $val){
             $user->{$key} = $val;
         }
+        $user->confirmation_code = md5( uniqid(mt_rand(), true) );
         $user->save();
         return $user;
     }
