@@ -11,18 +11,21 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
     protected $hidden = array('password', 'remember_token', 'confirmation_code');
 
+    protected $fillable = array('first_name', 'last_name', 'email', 'phone');
+
     public static $create_rules = array(
-        'first_name' => 'required',
-        'last_name' => 'required',
-        'email' => 'required|email|unique:users',
-        'password' => 'required|min:8|confirmed',
-        'role_name' => 'required|exists:roles,name'
+        'first_name'    => 'required',
+        'last_name'     => 'required',
+        'role_name'     => 'required|exists:roles,name',
+        'phone'         => 'required',
+        'email'         => 'required|email|unique:users',
+        'password'      => 'sometimes|required|min:8|confirmed',
     );
 
     public static $update_rules = array(
-        'email' => 'email',
-        'password' => 'min:8|confirmed',
-        'role_name' => 'exists:roles,name'
+        'email'         => 'sometimes|required|email|unique:users,email,$user_id',
+        'password'      => 'sometimes|required|min:8|confirmed',
+        'role_name'     => 'sometimes|required|exists:roles,name'
     );
 
     public function role()
@@ -30,27 +33,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->belongsTo('Role');
     }
 
-    public static function validator($fields, $rules = null)
+    public static function validator($data, $user_id=null)
     {
-        $rules = $rules ? $rules : self::$create_rules;
+        // if we came in with a $user_id, it means we're updating
+        $rules = $user_id ?
+                 str_replace('$user_id', $user_id, self::$update_rules) :
+                 self::$create_rules;
 
-        $validator = Validator::make($fields, $rules);
-
-        return Validator::make($fields, $rules);
-    }
-
-
-    public static function create(array $data = array())
-    {
-        unset($data['password_confirmation']);
-        $data['password'] = Hash::make($data['password']);
-        $user = new User();
-        foreach($data as $key => $val){
-            $user->{$key} = $val;
-        }
-        $user->confirmation_code = md5( uniqid(mt_rand(), true) );
-        $user->save();
-        return $user;
+        return Validator::make($data, $rules);
     }
 
     public function getFullName()

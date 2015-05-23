@@ -45,12 +45,13 @@ class CreateAdminCommand extends Command {
 	{
 		$data = array();
 		$data['first_name'] = $this->ask('First name?');
-		$data['last_name'] = $this->ask('Last name?');
+        $data['last_name'] = $this->ask('Last name?');
+        $data['phone'] = $this->ask('Phone?');
 		$data['email'] = $this->ask('Email?');
-		$data['password'] = $this->secret('Password? (at least 8 characters)');
+		$data['password'] = $this->secret('Password? (at least 8 characters)', '');
 		$data['password_confirmation'] = $this->secret('Confirm Password?');
         $data['role_name'] = 'Super Admin';
-		$data['confirmed'] = true;
+        $data['confirmed'] = 1;
 
         $validator = User::validator($data);
 
@@ -60,7 +61,11 @@ class CreateAdminCommand extends Command {
 				echo "{$error}\n";
 			}
 		}else{
-            $user = User::create($data);
+            unset($data['password_confirmation']);
+            $data['password'] = Hash::make($data['password']);
+            $user = new User();
+            foreach($data as $key => $val){$user->{$key} = $val;}
+            $user->save();
 			echo $this->colorize("User " . $user->getFullName() . " created successfully", "success")."\n";
 		}
 	}
