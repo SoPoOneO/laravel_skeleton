@@ -30,7 +30,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
     public function role()
     {
-        return $this->belongsTo('Role');
+        return $this->belongsTo('Role', 'role_name', 'name');
     }
 
     public static function validator($data, $user_id=null)

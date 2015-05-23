@@ -9,5 +9,10 @@ class Role extends Eloquent {
         return $this->belongsToMany('Permission', 'permission_role', 'role_name', 'permission_name');
     }
 
+    public function users()
+    {
+        return $this->hasMany('User', 'role_name', 'name');
+    }
+
 
 }
