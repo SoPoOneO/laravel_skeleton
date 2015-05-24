@@ -51,9 +51,13 @@ class AccountController extends BaseController {
 		}
 
 		$user->update(Input::all());
+		if($password = Input::get('password')){
+			$user->password = Hash::make($password);
+			$user->save();
+		}
 
 		return Redirect::back()
-		    ->with('success', 'Account updated');
+		    ->with('success', 'Account updated.');
 
 
 	}
