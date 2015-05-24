@@ -42,6 +42,20 @@ class AccountController extends BaseController {
 		$user = Auth::user();
 
 		$validator = User::validator(Input::all(), $user->id);
+
+		if($validator->fails()){
+
+		    return Redirect::back()
+		        ->withInput()
+		        ->withErrors($validator->errors());
+		}
+
+		$user->update(Input::all());
+
+		return Redirect::back()
+		    ->with('success', 'Account updated');
+
+
 	}
 
 }

@@ -102,8 +102,14 @@
                 </div>
                 @endif
 
+                @if(Session::get('danger'))
+                <div class="alert alert-danger">
+                    {{ Session::get('danger') }}
+                </div>
+                @endif
+
                 @if($errors->any())
-                <div class="alert alert-error">
+                <div class="alert alert-danger">
                     Errors on form. Could not save.
                 </div>
                 @endif
