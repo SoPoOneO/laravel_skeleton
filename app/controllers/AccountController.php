@@ -18,7 +18,7 @@ class AccountController extends BaseController {
 		{
 		    return Redirect::back()
 		        ->withInput()
-		        ->with('warning', 'bad cred');
+		        ->with('warning', 'Invalid Credentials');
 		}
 
 		return Redirect::intended('/');
