@@ -27,6 +27,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     );
 
     public static $update_rules = array(
+        'first_name'    => 'sometimes|required',
+        'last_name'     => 'sometimes|required',
+        'phone'         => 'sometimes|required',
         'email'         => 'sometimes|required|email|unique:users,email,$user_id',
         'password'      => 'sometimes|required|min:8|confirmed',
         'role_name'     => 'sometimes|required|exists:roles,name'
@@ -40,6 +43,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
                  self::$create_rules;
 
         return Validator::make($data, $rules);
+    }
+
+    public static function cliCreate($data)
+    {
+        unset($data['password_confirmation']);
+        $data['password'] = Hash::make($data['password']);
+        $data['confirmed'] = 1;
+        Eloquent::unguard();
+        return User::create($data);
     }
 
     // ------------------------------------------------------ //

@@ -50,8 +50,7 @@ class CreateAdminCommand extends Command {
 		$data['email'] = $this->ask('Email?');
 		$data['password'] = $this->secret('Password? (at least 8 characters)', '');
 		$data['password_confirmation'] = $this->secret('Confirm Password?');
-        $data['role_name'] = 'Super Admin';
-        $data['confirmed'] = 1;
+        $data['role_name'] = Role::orderBy('rank', 'ASC')->first()->name;
 
         $validator = User::validator($data);
 
@@ -61,10 +60,7 @@ class CreateAdminCommand extends Command {
 				echo "{$error}\n";
 			}
 		}else{
-            unset($data['password_confirmation']);
-            $data['password'] = Hash::make($data['password']);
-            Eloquent::unguard();
-            $user = User::create($data);
+            $user = User::cliCreate($data);
 			echo $this->colorize("User " . $user->getFullName() . " created successfully", "success")."\n";
 		}
 	}
