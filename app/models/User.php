@@ -57,15 +57,24 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->belongsTo('Role', 'role_name', 'name');
     }
 
-    public function can($permission)
+    public function can($permission_name)
     {
         // if we're looking for a permission that doesn't even exist...
-        if(!Permission::exists($permission)){
-            throw new Exception("The permission \"{$permission}\" doesn't exist", 1);
+        if(!Permission::exists($permission_name)){
+            throw new Exception("The permission \"{$permission_name}\" doesn't exist", 1);
         }
 
         // does this user's role have the permission in question
         return $this->role->permissions->contains($permission);
+    }
+
+    public function hasRole($role_name)
+    {
+        if(!Role::exists($role_name)){
+            throw new Exception("The role \"{$role_name}\" doesn't exist", 1);
+        }
+
+        return $this->role_name === $role_name;
     }
 
     public function getFullName()
