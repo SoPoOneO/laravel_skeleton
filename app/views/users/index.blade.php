@@ -1,1 +1,7 @@
-/Users/johnbussey/Desktop/laravel_skeleton/app/views/Users/index.blade.php
+@extends('layouts.master')
+
+@section('content')
+
+this is the users page
+
+@stop

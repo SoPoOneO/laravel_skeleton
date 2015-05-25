@@ -2,7 +2,7 @@
 
 class BaseController extends Controller {
 
-	public $breadcrumbs = array();
+	public $breadcrumbs = [];
 
   /**
    * Initializer.
@@ -12,10 +12,10 @@ class BaseController extends Controller {
    */
     public function __construct()
     {
-        $this->beforeFilter('csrf', array('on' => array('post', 'delete', 'put')));
-        $this->beforeFilter('ajax', array('on' => array('post', 'delete', 'put')));
-        $this->setNav('');
-        View::share('breadcrumbs', $this->breadcrumbs);
+        $this->beforeFilter('csrf', ['on' => ['post', 'delete', 'put']]);
+        $this->beforeFilter('ajax', ['on' => ['post', 'delete', 'put']]);
+        $this->setNav('home');
+        $this->addCrumb('Home', '/');
     }
 
 
@@ -40,10 +40,10 @@ class BaseController extends Controller {
 	protected function addCrumb($name, $url='')
 	{
         if($name){
-    		$this->breadcrumbs[] = array(
+    		$this->breadcrumbs[] = [
      			'name' => $name,
      			'url' => $url
-     		);
+     		];
         }
 
         View::share('breadcrumbs', $this->breadcrumbs);
