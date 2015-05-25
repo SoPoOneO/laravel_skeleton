@@ -2,6 +2,8 @@
 
 class AccountController extends BaseController {
 
+	// add auth check to get and post index
+
 
 	public function getLogin()
 	{
