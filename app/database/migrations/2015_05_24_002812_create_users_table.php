@@ -21,7 +21,10 @@ class CreateUsersTable extends Migration
             $table->string('remember_token')->nullable();
             $table->boolean('confirmed')->default(false);
             $table->string('role_name', 32);
-            $table->foreign('role_name')->references('name')->on('roles');
+            $table->foreign('role_name')
+                ->references('name')
+                ->on('roles')
+                ->onUpdate('cascade');
             $table->timestamps();
         });
 
