@@ -62,14 +62,14 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/account/logout">
+                            <a href="/logout">
                                 <i class="fa fa-fw fa-power-off"></i>
                                 Log Out
                             </a>
                         </li>
                     </ul>
                     @else
-                    <a href="/account/login"> Login </a>
+                    <a href="/login"> Login </a>
                     @endif
                 </li>
             </ul>
