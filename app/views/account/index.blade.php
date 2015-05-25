@@ -2,8 +2,7 @@
 
 @section('content')
 
-
-{{ BootForm::open() }}
+{{ BootForm::open()->put() }}
 
     {{ BootForm::text('Role', 'role_name')->value($user->role_name)->disable() }}
 

@@ -12,8 +12,7 @@ class BaseController extends Controller {
    */
     public function __construct()
     {
-        $this->beforeFilter('csrf', ['on' => ['post', 'delete', 'put']]);
-        $this->beforeFilter('ajax', ['on' => ['post', 'delete', 'put']]);
+        $this->beforeFilter('csrf', ['on' => ['put', 'path', 'post', 'delete']]);
         $this->setNav('home');
         $this->addCrumb('Home', '/');
     }
