@@ -6,12 +6,6 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class CreateAdminCommand extends Command {
 
-
-    const SUCCESS = "[42m"; //Green background
-    const FAILURE = "[41m"; //Red background
-    const WARNING = "[43m"; //Yellow background
-    const NOTE = "[44m"; //Blue background
-
 	/**
 	 * The console command name.
 	 *
@@ -55,40 +49,16 @@ class CreateAdminCommand extends Command {
         $validator = User::validator($data);
 
 		if($validator->fails()){
-			echo $this->colorize("User creation failed", "failure")."\n";
+			echo $this->error("User creation failed");
 			foreach($validator->errors()->all() as $error){
-				echo "{$error}\n";
+				$this->error("{$error}");
 			}
 		}else{
             $user = User::cliCreate($data);
-			echo $this->colorize("User " . $user->getFullName() . " created successfully", "success")."\n";
+			echo $this->info("User " . $user->getFullName() . " with role \"" . $user->role_name . "\" created successfully");
 		}
 	}
 
-
-    protected function colorize($text, $status)
-    {
-        $out = "";
-        switch(strtoupper($status))
-        {
-            case "SUCCESS":
-                $out = self::SUCCESS;
-                break;
-            case "FAILURE":
-                $out = self::FAILURE;
-                break;
-            case "WARNING":
-                $out = self::WARNING;
-                break;
-            case "NOTE":
-                $out = self::NOTE;
-                break;
-            default:
-                throw new Exception("Invalid status: " . $status);
-        }
-
-        return chr(27) . "$out" . "$text" . chr(27) . "[0m";
-    }
 
 	/**
 	 * Get the console command arguments.
