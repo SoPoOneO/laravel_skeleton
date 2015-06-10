@@ -11,6 +11,8 @@
 |
 */
 
+Artisan::add(new AddPermissionsCommand);
+
 Artisan::add(new CreateAdminCommand);
 
 Artisan::add(new MigrateRedoCommand);
