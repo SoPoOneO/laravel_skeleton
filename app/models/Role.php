@@ -6,6 +6,8 @@ class Role extends Eloquent {
 
     public $timestamps = false;
 
+    protected $guarded = [];
+
     private static $all = null;
 
     public function permissions()

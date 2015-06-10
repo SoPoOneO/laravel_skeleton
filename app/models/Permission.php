@@ -6,7 +6,7 @@ class Permission extends Eloquent {
 
     public $timestamps = false;
 
-    protected $guarded = ['id'];
+    protected $guarded = [];
 
     private static $all = null;
 
