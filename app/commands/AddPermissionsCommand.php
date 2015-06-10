@@ -52,6 +52,8 @@ class AddPermissionsCommand extends Command {
 
 		$file = file_put_contents(app_path().'/database/migrations/'.$migration_name, $content);
 
+		$this->info("Created migration {$migration_name}.");
+
         $this->call('dump-autoload');
 
         // if we didn't get a flag to skip migration... then run it
@@ -107,8 +109,10 @@ class AddPermissionsCommand extends Command {
 
 		$up_lines = array();
 		foreach($roles as $role){
-			$up_lines[] = "        // ensuring existence of role '{$role}'";
-			$up_lines[] = $this->getAddRoleLine($role);
+			if($role_line = $this->getAddRoleLine($role)){
+				$up_lines[] = "        // Role '{$role}' doesn't exist yet, so create it";
+				$up_lines[] = $role_line;
+			}
 			foreach($permissions as $permission){
 				$up_lines[] = $this->getAddPermissionLine($permission, $role);
 			}
@@ -121,8 +125,11 @@ class AddPermissionsCommand extends Command {
 
 	private function getAddRoleLine($role_name)
 	{
-		$line = "        Role::firstOrCreate(array('name'=>'{$role_name}'));";
-		return $line;
+		if(!$role = Role::find($role_name)){
+			$rank = $this->ask("What rank should '{$role_name}' have?");
+			$line = "        Role::create(array('name'=>'{$role_name}', 'rank'=>'{$rank}'));";
+			return $line;
+		}
 	}
 
 	private function getAddPermissionLine($permission_name, $role_name)
@@ -137,7 +144,9 @@ class AddPermissionsCommand extends Command {
 		$array_raw = explode(',', $trimmed);
 		$array_clean = array_map('trim', $array_raw);
 
-		return $array_clean;
+		$response = array_filter($array_clean);
+
+		return $response;
 	}
 
 
