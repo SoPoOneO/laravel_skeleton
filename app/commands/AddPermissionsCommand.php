@@ -41,7 +41,7 @@ class AddPermissionsCommand extends Command {
 		$permissions 		= $this->strToArray($this->argument('permissions'));
 
 		$migration_words 	= $this->getMigrationWords($roles, $permissions);
-		$migration_name 	= $this->getDatePrefix() . '_' . implode('_', $migration_words) . '.php';
+		$migration_name 	= $this->getDatePrefix() . '_' . strtolower(implode('_', $migration_words)) . '.php';
 		$class_name 		= implode('', array_map('ucfirst', $migration_words));
 
 		$up 				= $this->getUp($roles, $permissions);
