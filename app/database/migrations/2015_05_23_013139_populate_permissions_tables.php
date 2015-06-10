@@ -19,15 +19,11 @@ class PopulatePermissionsTables extends Migration {
 			array('rank' => 4, 'name' => 'Representative')
 		));
 
-		Permission::insert(array(
-			array('name' => 'Alter Users')
-		));
-
 		// Super Admin Permissions
-		Role::find('Super Admin')->permissions()->attach('Alter Users');
+		Permission::firstOrCreate(array('role_name'=>'Super Admin', 'name'=>'Alter Users'));
 
 		// // Admin Permissions
-		Role::find('Admin')->permissions()->attach('Alter Users');
+		Permission::firstOrCreate(array('role_name'=>'Admin', 'name'=>'Alter Users'));
 
 	}
 

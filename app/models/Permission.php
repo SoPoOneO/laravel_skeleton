@@ -4,6 +4,10 @@ class Permission extends Eloquent {
 
     protected $primaryKey = 'name';
 
+    public $timestamps = false;
+
+    protected $guarded = ['id'];
+
     private static $all = null;
 
     public static function exists($permission_name)
@@ -16,10 +20,6 @@ class Permission extends Eloquent {
         return self::$all->contains($permission_name);
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany('Role', 'permission_role', 'permission_name', 'role_name');
-    }
 
 
 }

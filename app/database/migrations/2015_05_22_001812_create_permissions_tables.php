@@ -17,21 +17,10 @@ class CreatePermissionsTables extends Migration
             $table->integer('rank');
         });
 
-        // Creates the permissions table
-        Schema::create('permissions', function ($table) {
-            $table->string('name', 32)->primary();
-        });
-
         // Creates the permission_role (Many-to-Many relation) table
-        Schema::create('permission_role', function ($table) {
-            $table->increments('id')->unsigned();
+        Schema::create('permissions', function ($table) {
             $table->string('role_name', 32);
-            $table->string('permission_name', 32);
-            $table->foreign('permission_name')
-                ->references('name')
-                ->on('permissions')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->string('name', 32);
             $table->foreign('role_name')
                 ->references('name')
                 ->on('roles')

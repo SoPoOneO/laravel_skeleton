@@ -4,11 +4,13 @@ class Role extends Eloquent {
 
     protected $primaryKey = 'name';
 
+    public $timestamps = false;
+
     private static $all = null;
 
     public function permissions()
     {
-        return $this->belongsToMany('Permission', 'permission_role', 'role_name', 'permission_name');
+        return $this->hasMany('Permission', 'role_name', 'permission_name');
     }
 
     public function users()
